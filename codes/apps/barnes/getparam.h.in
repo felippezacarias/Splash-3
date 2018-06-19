@@ -1,7 +1,7 @@
 #ifndef _GETPARAM_H_
 #define _GETPARAM_H_
 
-void initparam(FILE*,string *defv);
+void initparam(string *defv);
 string getparam(FILE*,string name);
 long getiparam(FILE*,string name);
 long getlparam(FILE*,string name);
