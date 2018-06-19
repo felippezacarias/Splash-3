@@ -1,12 +1,12 @@
 #ifndef _GETPARAM_H_
 #define _GETPARAM_H_
 
-void initparam(string *defv);
-string getparam(string name);
-long getiparam(string name);
-long getlparam(string name);
-bool getbparam(string name);
-double getdparam(string name);
+void initparam(FILE*,string *defv);
+string getparam(FILE*,string name);
+long getiparam(FILE*,string name);
+long getlparam(FILE*,string name);
+bool getbparam(FILE*,string name);
+double getdparam(FILE*,string name);
 long scanbind(string bvec[], string name);
 bool matchname(string bind, string name);
 string extrvalue(string arg);

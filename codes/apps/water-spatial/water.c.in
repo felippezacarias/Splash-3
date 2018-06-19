@@ -123,10 +123,29 @@ int main(int argc, char **argv)
     RHO   =0.9980;
 
     /* read input */
-
-    if (scanf("%lf%ld%ld%ld%ld%ld%ld%ld%ld%lf",&TSTEP, &NMOL, &NSTEP, &NORDER,
+    //original
+    /*if (scanf("%lf%ld%ld%ld%ld%ld%ld%ld%ld%lf",&TSTEP, &NMOL, &NSTEP, &NORDER,
               &NSAVE, &NRST, &NPRINT, &NFMC,&NumProcs, &CUTOFF) != 10)
         fprintf(stderr,"ERROR: Usage: water < infile, which must have 10 fields, see SPLASH documentation or comment at top of water.C\n");
+    */
+
+    //Modified
+    if(argc < 10){
+        fprintf(stderr,"ERROR: Usage: water <parameters>, which must have 10 fields, see SPLASH documentation or comment at top of water.C\n");
+        exit(0);
+    }
+    else{
+        TSTEP = atof(argv[1]);
+        NMOL = strtol(argv[2], NULL, 10);
+        NSTEP = strtol(argv[3], NULL, 10);
+        NORDER = strtol(argv[4], NULL, 10);
+        NSAVE = strtol(argv[5], NULL, 10);
+        NRST = strtol(argv[6], NULL, 10);
+        NPRINT = strtol(argv[7], NULL, 10);
+        NFMC = strtol(argv[8], NULL, 10);
+        NumProcs = strtol(argv[9], NULL, 10);
+        CUTOFF = atof(argv[10]);
+    }
 
     printf("Using %ld procs on %ld steps of %ld mols\n", NumProcs, NSTEP, NMOL);
     printf("Other parameters:\n\tTSTEP = %8.2e\n\tNORDER = %ld\n\tNSAVE = %ld\n",TSTEP,NORDER,NSAVE);

@@ -119,10 +119,30 @@ int main(int argc, char **argv)
     CUTOFF=0.0;
 
     /* read input */
-
-    if (scanf("%lf%ld%ld%ld%ld%ld%ld%ld%ld%lf",&TSTEP, &NMOL, &NSTEP, &NORDER,
+    //original
+    /*if (scanf("%lf%ld%ld%ld%ld%ld%ld%ld%ld%lf",&TSTEP, &NMOL, &NSTEP, &NORDER,
               &NSAVE, &NRST, &NPRINT, &NFMC,&NumProcs, &CUTOFF) != 10)
         fprintf(stderr,"ERROR: Usage: water < infile, which must have 10 fields, see SPLASH documentation or comment at top of water.C\n");
+    */
+
+    //Modified
+    if(argc < 10){
+        fprintf(stderr,"ERROR: Usage: water <parameters>, which must have 10 fields, see SPLASH documentation or comment at top of water.C\n");
+        exit(0);
+    }
+    else{
+        TSTEP = atof(argv[1]);
+        NMOL = strtol(argv[2], NULL, 10);
+        NSTEP = strtol(argv[3], NULL, 10);
+        NORDER = strtol(argv[4], NULL, 10);
+        NSAVE = strtol(argv[5], NULL, 10);
+        NRST = strtol(argv[6], NULL, 10);
+        NPRINT = strtol(argv[7], NULL, 10);
+        NFMC = strtol(argv[8], NULL, 10);
+        NumProcs = strtol(argv[9], NULL, 10);
+        CUTOFF = atof(argv[10]);
+    }
+
 
     if (NMOL > MAXLCKS) {
         fprintf(stderr, "Just so you know ... Lock array in global.H has size %ld < %ld (NMOL)\n code will still run correctly but there may be lock contention\n\n", MAXLCKS, NMOL);

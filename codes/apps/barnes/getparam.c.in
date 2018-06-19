@@ -37,7 +37,7 @@ void initparam(string *defv)
  * GETPARAM: export version prompts user for value.
  */
 
-string getparam(string name)
+string getparam(FILE *fp, string name)
 {
    long i, leng;
    string def;
@@ -49,7 +49,7 @@ string getparam(string name)
    if (i < 0)
       error("getparam: %s unknown\n", name);
    def = extrvalue(defaults[i]);
-   fgets(buf, 128, stdin);
+   fgets(buf, 128, fp);
    leng = strlen(buf) + 1;
    buf[leng-1] = '\0';
    leng--;
@@ -65,31 +65,31 @@ string getparam(string name)
  * GETIPARAM, ..., GETDPARAM: get long, long, bool, or double parameters.
  */
 
-long getiparam(string name)
+long getiparam(FILE *fp, string name)
 {
    string val;
 
    for (val = ""; *val == '\0';) {
-      val = getparam(name);
+      val = getparam(fp, name);
    }
    return (atoi(val));
 }
 
-long getlparam(string name)
+long getlparam(FILE *fp, string name)
 {
    string val;
 
    for (val = ""; *val == '\0'; )
-      val = getparam(name);
+      val = getparam(fp, name);
    return (atol(val));
 }
 
-bool getbparam(string name)
+bool getbparam(FILE *fp, string name)
 {
    string val;
 
    for (val = ""; *val == '\0'; )
-      val = getparam(name);
+      val = getparam(fp, name);
    if (strchr("tTyY1", *val) != NULL) {
       return (TRUE);
    }
@@ -99,12 +99,12 @@ bool getbparam(string name)
    error("getbparam: %s=%s not bool\n", name, val);
 }
 
-double getdparam(string name)
+double getdparam(FILE *fp, string name)
 {
    string val;
 
    for (val = ""; *val == '\0'; ) {
-      val = getparam(name);
+      val = getparam(fp, name);
    }
    return (atof(val));
 }

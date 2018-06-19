@@ -245,16 +245,16 @@ int main (int argc, string argv[])
 	Help();
 	exit(-1);
 	break;
-      default:
-	fprintf(stderr, "Only valid option is \"-h\".\n");
-	exit(-1);
-	break;
+    //  default:
+	//fprintf(stderr, "Only valid option is \"-h\".\n");
+	//exit(-1);
+	//break;
      }
    }
 
    Global = NULL;
    initparam(defv);
-   startrun();
+   startrun(argv[1]);
    initoutput();
    tab_init();
 
@@ -456,40 +456,51 @@ void SlaveStart()
  * STARTRUN: startup hierarchical N-body code.
  */
 
-void startrun()
+void startrun(char *input_file)
 {
    long seed;
+   FILE *stdin_file;
 
-   infile = getparam("in");
+   stdin_file = fopen(input_file,"r");
+
+   if(stdin_file == NULL){
+    fprintf(stderr, "ERROR: Input file could not be open!\n");
+    exit(0);
+   }
+
+
+   infile = getparam(stdin_file,"in");
    if (*infile != '\0'/*NULL*/) {
       inputdata();
    }
    else {
-      nbody = getiparam("nbody");
+      nbody = getiparam(stdin_file,"nbody");
       if (nbody < 1) {
 	 error("startrun: absurd nbody\n");
       }
-      seed = getiparam("seed");
+      seed = getiparam(stdin_file,"seed");
    }
 
-   outfile = getparam("out");
-   dtime = getdparam("dtime");
+   outfile = getparam(stdin_file,"out");
+   dtime = getdparam(stdin_file,"dtime");
    dthf = 0.5 * dtime;
-   eps = getdparam("eps");
+   eps = getdparam(stdin_file,"eps");
    epssq = eps*eps;
-   tol = getdparam("tol");
+   tol = getdparam(stdin_file,"tol");
    tolsq = tol*tol;
-   fcells = getdparam("fcells");
-   fleaves = getdparam("fleaves");
-   tstop = getdparam("tstop");
-   dtout = getdparam("dtout");
-   NPROC = getiparam("NPROC");
+   fcells = getdparam(stdin_file,"fcells");
+   fleaves = getdparam(stdin_file,"fleaves");
+   tstop = getdparam(stdin_file,"tstop");
+   dtout = getdparam(stdin_file,"dtout");
+   NPROC = getiparam(stdin_file,"NPROC");
    Local[0].nstep = 0;
    pranset(seed);
    testdata();
    ANLinit();
    setbound();
    Local[0].tout = Local[0].tnow + dtout;
+
+   fclose(stdin_file);
 }
 
 /*
